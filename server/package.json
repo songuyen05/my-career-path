@@ -11,7 +11,8 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "test": "vitest run src",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "migrate": "tsx src/config/migrate.ts"
   },
   "keywords": [],
   "author": "",
