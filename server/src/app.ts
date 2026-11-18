@@ -55,7 +55,7 @@ app.use("/api/applications", applicationsRouter);
 app.get("/api/health", (_req, res) => {
   res.json({
     status: "ok",
-    message: "Japan Career Tracker API is running!",
+    message: "MyCareerPath API is running!",
   });
 });
 

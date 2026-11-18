@@ -12,7 +12,7 @@ describe("API Health Check", () => {
     expect(response.status).toBe(200);
     expect(response.body).toEqual({
       status: "ok",
-      message: "Japan Career Tracker API is running!",
+      message: "MyCareerPath API is running!",
     });
   });
 });
