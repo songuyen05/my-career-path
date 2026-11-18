@@ -370,10 +370,10 @@ function App() {
     <div className="app-shell">
       <aside className="sidebar">
         <div className="brand">
-          <div className="brand-icon">J</div>
+          <div className="brand-icon">M</div>
           <div>
-            <h2>Japan Career</h2>
-            <span>TRACKER</span>
+            <h2>MyCareerPath</h2>
+            <span>YOUR CAREER</span>
           </div>
         </div>
 
@@ -409,7 +409,7 @@ function App() {
             <p className="eyebrow">YOUR CAREER JOURNEY</p>
             <h1>Dashboard</h1>
             <p className="subtitle">
-              Keep track of your journey toward a career in Japan.
+              Manage your job search and career opportunities in one place.
             </p>
           </div>
           <button className="primary-button" onClick={openAddForm}>
@@ -637,7 +637,7 @@ function App() {
           <div className="section-heading">
             <div>
               <h2>Recent applications</h2>
-              <p>Your tracked opportunities in Japan.</p>
+              <p>Your career opportunities, all in one place.</p>
             </div>
 
             <input
@@ -777,7 +777,7 @@ function App() {
         </section>
 
         <footer>
-          Japan Career Tracker <span>Built to make your next move happen.</span>
+          MyCareerPath <span>Your career. Your opportunities.</span>
         </footer>
       </main>
     </div>
