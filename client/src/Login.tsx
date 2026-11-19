@@ -42,7 +42,7 @@ function Login({ onLogin }: LoginProps) {
         <div className="login-brand">
           <div className="brand-icon">J</div>
           <div>
-            <h2>Japan Career</h2>
+            <h2>MyCareerPath</h2>
             <span>TRACKER</span>
           </div>
         </div>

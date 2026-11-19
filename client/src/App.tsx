@@ -90,6 +90,7 @@ function App() {
   const [applications, setApplications] = useState<Application[]>([])
   const [loadingApplications, setLoadingApplications] = useState(false)
   const [error, setError] = useState('')
+  const [activePage, setActivePage] = useState<'dashboard' | 'applications'>('dashboard')
 
   const [showForm, setShowForm] = useState(false)
   const [editingId, setEditingId] = useState<string | null>(null)
@@ -179,6 +180,7 @@ function App() {
 
   const openAddForm = () => {
     resetForm()
+    setActivePage('applications')
     setShowForm(true)
   }
 
@@ -379,8 +381,21 @@ function App() {
 
         <div className="sidebar-label">WORKSPACE</div>
         <nav>
-          <a className="nav-item active" href="#dashboard">▦ Dashboard</a>
-          <a className="nav-item" href="#applications">▤ Applications</a>
+          <button
+            type="button"
+            className={`nav-item ${activePage === 'dashboard' ? 'active' : ''}`}
+            onClick={() => setActivePage('dashboard')}
+          >
+            ▦ Dashboard
+          </button>
+
+          <button
+            type="button"
+            className={`nav-item ${activePage === 'applications' ? 'active' : ''}`}
+            onClick={() => setActivePage('applications')}
+          >
+            ▤ Applications
+          </button>
         </nav>
 
         <div className="sidebar-bottom">
@@ -394,7 +409,7 @@ function App() {
 
       <main className="main-content" id="dashboard">
         <header className="topbar">
-          <span>Workspace / Dashboard</span>
+          <span>Workspace / {activePage === 'dashboard' ? 'Dashboard' : 'Applications'}</span>
           <div className="topbar-right">
             <span className="status-dot" />
             Job search active
@@ -407,10 +422,12 @@ function App() {
         <section className="page-heading">
           <div>
             <p className="eyebrow">YOUR CAREER JOURNEY</p>
-            <h1>Dashboard</h1>
+            <h1>{activePage === 'dashboard' ? 'Dashboard' : 'Applications'}</h1>
             <p className="subtitle">
-              Manage your job search and career opportunities in one place.
-            </p>
+              {activePage === 'dashboard'
+                ? 'Your job search at a glance.'
+                : 'Manage, organize, and track your job applications.'}
+              </p>
           </div>
           <button className="primary-button" onClick={openAddForm}>
             + Add application
@@ -581,200 +598,204 @@ function App() {
         )}
 
 
-        <section className="stats-grid">
-          <div className="stat-card">
-            <div className="stat-top"><span>Total applications</span><span>▤</span></div>
-            <strong>{applications.length}</strong>
-            <small>Companies tracked</small>
-          </div>
-
-          <div className="stat-card">
-            <div className="stat-top"><span>Interviews</span><span>◉</span></div>
-            <strong>{countByStatus('Interview')}</strong>
-            <small>Interview opportunities</small>
-          </div>
-
-          <div className="stat-card">
-            <div className="stat-top"><span>Offers</span><span>✧</span></div>
-            <strong>{countByStatus('Offer')}</strong>
-            <small>Potential opportunities</small>
-          </div>
-
-          <div className="stat-card">
-            <div className="stat-top"><span>Applications pending</span><span>◷</span></div>
-            <strong>{countByStatus('Applied')}</strong>
-            <small>Awaiting a response</small>
-          </div>
-        </section>
-
-        <section className="applications-section" id="applications">
-          <div className="view-switcher">
-            <button
-              className={viewMode === 'table' ? 'view-button active' : 'view-button'}
-              onClick={() => setViewMode('table')}
-            >
-              ☷ Table
-            </button>
-
-            <button
-              className={viewMode === 'kanban' ? 'view-button active' : 'view-button'}
-              onClick={() => setViewMode('kanban')}
-            >
-              ▦ Kanban Board
-            </button>
-
-            <button
-              className={viewMode === 'analytics' ? 'view-button active' : 'view-button'}
-              onClick={() => setViewMode('analytics')}
-            >
-              ◷ Analytics
-            </button>
-          </div>
-
-          {viewMode === 'table' ? (
-            <>
-
-          <div className="section-heading">
-            <div>
-              <h2>Recent applications</h2>
-              <p>Your career opportunities, all in one place.</p>
+        {activePage === 'dashboard' && (
+          <section className="stats-grid">
+            <div className="stat-card">
+              <div className="stat-top"><span>Total applications</span><span>▤</span></div>
+              <strong>{applications.length}</strong>
+              <small>Companies tracked</small>
             </div>
 
-            <input
-              className="search-input"
-              value={search}
-              onChange={(event) => setSearch(event.target.value)}
-              placeholder="Search applications..."
-            />
+            <div className="stat-card">
+              <div className="stat-top"><span>Interviews</span><span>◉</span></div>
+              <strong>{countByStatus('Interview')}</strong>
+              <small>Interview opportunities</small>
+            </div>
 
-            <select
-              className="filter-select"
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-            >
-              <option value="All">All statuses</option>
-              <option value="Saved">Saved</option>
-              <option value="Applied">Applied</option>
-              <option value="Interview">Interview</option>
-              <option value="Offer">Offer</option>
-              <option value="Rejected">Rejected</option>
-            </select>
-          </div>
+            <div className="stat-card">
+              <div className="stat-top"><span>Offers</span><span>✧</span></div>
+              <strong>{countByStatus('Offer')}</strong>
+              <small>Potential opportunities</small>
+            </div>
 
-          <div className="table-wrapper">
-            <table>
-              <thead>
-                <tr>
-                  <th>COMPANY</th>
-                  <th>POSITION</th>
-                  <th>JOB POSTING</th>
-                  <th>LOCATION</th>
-                  <th>COUNTRY</th>
-                  <th>WORK ARRANGEMENT</th>
-                  <th>SALARY</th>
-                  <th>DEADLINE</th>
-                  <th>APPLIED</th>
-                  <th>STATUS</th>
-                  <th>ACTIONS</th>
-                </tr>
-              </thead>
+            <div className="stat-card">
+              <div className="stat-top"><span>Applications pending</span><span>◷</span></div>
+              <strong>{countByStatus('Applied')}</strong>
+              <small>Awaiting a response</small>
+            </div>
+          </section>
+        )}
 
-              <tbody>
-                {filteredApplications.map((application) => (
-                  <tr key={application.id}>
-                    <td className="company-cell">
-                      <div className="company-avatar">
-                        {application.company.charAt(0).toUpperCase()}
-                      </div>
-                      {application.company}
-                    </td>
+        {activePage === 'applications' && (
+          <section className="applications-section" id="applications">
+            <div className="view-switcher">
+              <button
+                className={viewMode === 'table' ? 'view-button active' : 'view-button'}
+                onClick={() => setViewMode('table')}
+              >
+                ☷ Table
+              </button>
 
-                    <td>{application.position}</td>
-                    <td>
-                      {application.job_url ? (
-                        <a
-                          href={application.job_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="job-link"
-                        >
-                          View posting ↗
-                        </a>
-                      ) : (
-                        '—'
-                      )}
-                    </td>
-                    <td>{application.location || '—'}</td>
-                    <td>{application.country === 'JP' ? 'Japan' : 'United States'}</td>
-                    <td>{application.work_arrangement || '—'}</td>
-                    <td>{formatSalaryRange(application)}</td>
-                    <td>
-                      {application.deadline ? (
-                        <span className={`deadline-badge ${getDeadlineStatus(application.deadline)}`}>
-                          {formatDeadline(application.deadline)}
+              <button
+                className={viewMode === 'kanban' ? 'view-button active' : 'view-button'}
+                onClick={() => setViewMode('kanban')}
+              >
+                ▦ Kanban Board
+              </button>
+
+              <button
+                className={viewMode === 'analytics' ? 'view-button active' : 'view-button'}
+                onClick={() => setViewMode('analytics')}
+              >
+                ◷ Analytics
+              </button>
+            </div>
+
+            {viewMode === 'table' ? (
+              <>
+
+            <div className="section-heading">
+              <div>
+                <h2>Recent applications</h2>
+                <p>Your career opportunities, all in one place.</p>
+              </div>
+
+              <input
+                className="search-input"
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
+                placeholder="Search applications..."
+              />
+
+              <select
+                className="filter-select"
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+              >
+                <option value="All">All statuses</option>
+                <option value="Saved">Saved</option>
+                <option value="Applied">Applied</option>
+                <option value="Interview">Interview</option>
+                <option value="Offer">Offer</option>
+                <option value="Rejected">Rejected</option>
+              </select>
+            </div>
+
+            <div className="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>COMPANY</th>
+                    <th>POSITION</th>
+                    <th>JOB POSTING</th>
+                    <th>LOCATION</th>
+                    <th>COUNTRY</th>
+                    <th>WORK ARRANGEMENT</th>
+                    <th>SALARY</th>
+                    <th>DEADLINE</th>
+                    <th>APPLIED</th>
+                    <th>STATUS</th>
+                    <th>ACTIONS</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {filteredApplications.map((application) => (
+                    <tr key={application.id}>
+                      <td className="company-cell">
+                        <div className="company-avatar">
+                          {application.company.charAt(0).toUpperCase()}
+                        </div>
+                        {application.company}
+                      </td>
+
+                      <td>{application.position}</td>
+                      <td>
+                        {application.job_url ? (
+                          <a
+                            href={application.job_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="job-link"
+                          >
+                            View posting ↗
+                          </a>
+                        ) : (
+                          '—'
+                        )}
+                      </td>
+                      <td>{application.location || '—'}</td>
+                      <td>{application.country === 'JP' ? 'Japan' : 'United States'}</td>
+                      <td>{application.work_arrangement || '—'}</td>
+                      <td>{formatSalaryRange(application)}</td>
+                      <td>
+                        {application.deadline ? (
+                          <span className={`deadline-badge ${getDeadlineStatus(application.deadline)}`}>
+                            {formatDeadline(application.deadline)}
+                          </span>
+                        ) : (
+                          '—'
+                        )}
+                      </td>
+
+                      <td>
+                        {application.applied_at
+                          ? formatDeadline(application.applied_at)
+                          : '—'}
+                      </td>
+
+                      <td>
+                        <span className={`status-badge ${application.status.toLowerCase()}`}>
+                          {application.status}
                         </span>
-                      ) : (
-                        '—'
-                      )}
-                    </td>
+                      </td>
 
-                    <td>
-                      {application.applied_at
-                        ? formatDeadline(application.applied_at)
-                        : '—'}
-                    </td>
+                      <td className="actions-cell">
+                        <button
+                          className="action-button"
+                          onClick={() => openEditForm(application)}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          className="action-button delete-button"
+                          onClick={() => deleteApplication(application.id)}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
 
-                    <td>
-                      <span className={`status-badge ${application.status.toLowerCase()}`}>
-                        {application.status}
-                      </span>
-                    </td>
+                  {!loadingApplications && filteredApplications.length === 0 && (
+                    <tr>
+                      <td colSpan={11} className="empty-state">
+                        No applications found.
+                      </td>
+                    </tr>
+                  )}
 
-                    <td className="actions-cell">
-                      <button
-                        className="action-button"
-                        onClick={() => openEditForm(application)}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        className="action-button delete-button"
-                        onClick={() => deleteApplication(application.id)}
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-
-                {!loadingApplications && filteredApplications.length === 0 && (
-                  <tr>
-                    <td colSpan={11} className="empty-state">
-                      No applications found.
-                    </td>
-                  </tr>
-                )}
-
-                {loadingApplications && (
-                  <tr>
-                    <td colSpan={11} className="empty-state">
-                      Loading applications...
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-            </>
-          ) : viewMode === 'kanban' ? (
-            <KanbanBoard
-              applications={applications}
-              onStatusChange={handleStatusChange}
-            />
-          ) : (
-            <AnalyticsDashboard applications={applications} />
-          )}
-        </section>
+                  {loadingApplications && (
+                    <tr>
+                      <td colSpan={11} className="empty-state">
+                        Loading applications...
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+              </>
+            ) : viewMode === 'kanban' ? (
+              <KanbanBoard
+                applications={applications}
+                onStatusChange={handleStatusChange}
+              />
+            ) : (
+              <AnalyticsDashboard applications={applications} />
+            )}
+          </section>
+        )}
 
         <footer>
           MyCareerPath <span>Your career. Your opportunities.</span>
