@@ -626,6 +626,62 @@ function App() {
           </section>
         )}
 
+        {activePage === 'dashboard' && (
+          <section className="applications-section">
+            <div className="section-heading">
+              <div>
+                <h2>Recent applications</h2>
+                <p>Your latest career opportunities.</p>
+              </div>
+
+              <button
+                className="primary-button"
+                onClick={() => setActivePage('applications')}
+              >
+                View all applications
+              </button>
+            </div>
+
+            {applications.length === 0 ? (
+              <p>You haven't added any applications yet.</p>
+            ) : (
+              <div className="table-wrapper">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Company</th>
+                      <th>Position</th>
+                      <th>Status</th>
+                      <th>Date applied</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[...applications]
+                      .sort((a, b) => {
+                        const dateA = a.applied_at ? new Date(a.applied_at).getTime() : 0
+                        const dateB = b.applied_at ? new Date(b.applied_at).getTime() : 0
+                        return dateB - dateA
+                      })
+                      .slice(0, 5)
+                      .map((application) => (
+                        <tr key={application.id}>
+                          <td>{application.company}</td>
+                          <td>{application.position}</td>
+                          <td>{application.status}</td>
+                          <td>
+                            {application.applied_at
+                              ? new Date(application.applied_at).toLocaleDateString()
+                              : '—'}
+                            </td>
+                        </tr>
+                      ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </section>
+        )}
+
         {activePage === 'applications' && (
           <section className="applications-section" id="applications">
             <div className="view-switcher">
