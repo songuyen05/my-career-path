@@ -664,7 +664,14 @@ function App() {
                       })
                       .slice(0, 5)
                       .map((application) => (
-                        <tr key={application.id}>
+                        <tr
+                          key={application.id}
+                          className="clickable-row"
+                          onClick={() => {
+                            setActivePage('applications')
+                            openEditForm(application)
+                          }}
+                        >
                           <td>{application.company}</td>
                           <td>{application.position}</td>
                           <td>{application.status}</td>
