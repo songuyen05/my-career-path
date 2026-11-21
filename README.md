@@ -1,5 +1,7 @@
 # MyCareerPath
 
+![MyCareerPath dashboard](client/public/screenshots/dashboard.png)
+
 **Your Career. Your Opportunities.**
 
 MyCareerPath is a full-stack job application tracking platform designed to help job seekers organize applications, monitor their progress, and manage their career search in one place.
